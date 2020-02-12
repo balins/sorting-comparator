@@ -1,7 +1,7 @@
 # sorting comparator
 
 ## about
-a simple sorting algorithms comparator that can be easily extended by new ones
+sorting algorithms comparator that can be easily extended by new ones
 
 tests all of the given sortings algorithms for consecutive sample sizes:
 
