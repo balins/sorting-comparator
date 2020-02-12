@@ -1,4 +1,7 @@
-def sort(list_to_sort, caller):
+from util.measurable_sorting import MeasurableSorting
+
+
+def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
     is_sorted = False
 
     while not is_sorted:

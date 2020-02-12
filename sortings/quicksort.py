@@ -1,4 +1,7 @@
-def sort(list_to_sort, caller):
+from util.measurable_sorting import MeasurableSorting
+
+
+def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
     less = []
     equal_to_pivot = []
     greater = []

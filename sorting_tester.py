@@ -2,19 +2,20 @@ import math
 import os
 import random
 import time
+from typing import Iterator
 
 from util.mode import Mode
 from util.output_tools import *
-from util import defaults
+import defaults
 
 
-def generate_random_list(size) -> list:
+def generate_random_list(size: int) -> List[int]:
     print("\ngenerating random list of size " + str(size) + "...")
 
     return random.sample(range(0, size), size)
 
 
-def get_number_of_iterations(mode, interval, max_sample_size):
+def get_number_of_iterations(mode: Mode, interval: int, max_sample_size: int) -> int:
     if mode == Mode.LINEAR:
         return math.floor(max_sample_size / interval)
     elif mode == Mode.POLYNOMIAL:
@@ -24,7 +25,7 @@ def get_number_of_iterations(mode, interval, max_sample_size):
 
 
 class SortingTester:
-    def __init__(self, size: int, intrvl: int, incr_mode: Mode, sort_algs: list):
+    def __init__(self, size: int, intrvl: int, incr_mode: Mode, sort_algs: List[MeasurableSorting]):
         self.max_sample_size = size
         self.interval = intrvl
         self.mode = incr_mode
@@ -68,7 +69,7 @@ class SortingTester:
 
         print("the test has ended")
 
-    def get_next_sample_size(self):
+    def get_next_sample_size(self) -> Iterator[int, int]:
         i = 1
 
         while i <= self.upper_iter_bound:

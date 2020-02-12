@@ -1,12 +1,16 @@
+from typing import List, Tuple, TextIO
+
 import matplotlib.pyplot as plt
 
+from util.measurable_sorting import MeasurableSorting
 
-def write_to_files(text, *files):
+
+def write_to_files(text: str, *files: TextIO):
     for file in files:
         file.write(str(text))
 
 
-def init_csv_files(output_folder: str, sort_algs: list) -> tuple:
+def init_csv_files(output_folder: str, sort_algs: List[MeasurableSorting]) -> Tuple[TextIO, TextIO]:
     file_time_name = output_folder + "/results-time"
     file_ops_name = output_folder + "/results-ops"
     file_time = open(file_time_name + ".csv", "w")
@@ -16,7 +20,7 @@ def init_csv_files(output_folder: str, sort_algs: list) -> tuple:
     return file_time, file_ops
 
 
-def write_first_csv_row(sort_algs: list, *files):
+def write_first_csv_row(sort_algs: list, *files: TextIO):
     for file in files:
         first_row = "sample size"
 
@@ -28,7 +32,7 @@ def write_first_csv_row(sort_algs: list, *files):
         file.write(first_row)
 
 
-def generate_charts(sortings: list, output_folder: str, x_axis: list):
+def generate_charts(sortings: List[MeasurableSorting], output_folder: str, x_axis: List[int]):
     for sorting in sortings:
         plt.plot(x_axis, sorting.results_time, label=sorting.sorting_name)
 

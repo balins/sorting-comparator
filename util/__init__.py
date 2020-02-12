@@ -1,1 +1,1 @@
-from util import defaults, measurable_sorting, mode, output_tools, sorting_tester
+from util import measurable_sorting, mode, output_tools

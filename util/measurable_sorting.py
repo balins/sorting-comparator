@@ -19,7 +19,7 @@ class MeasurableSorting:
         end = timer()
         self.save_results(end - start)
 
-    def save_results(self, t):
+    def save_results(self, t: float):
         self.results_time.append(t)
         self.results_ops.append(self.ops_counter)
         self.ops_counter = 0
