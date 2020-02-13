@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import defaults
 
 
-def create_output_folder(mode_name: str):
+def get_output_folder(mode_name: str) -> str:
     folder_name = "." + os.path.sep + mode_name + "_"\
                   + time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime()) + os.path.sep
     os.mkdir(folder_name)

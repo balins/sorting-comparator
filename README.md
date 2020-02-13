@@ -1,4 +1,4 @@
-# sorting comparator
+# sorting comparator v1.0
 
 ## about
 sorting algorithms comparator that can be easily extended by new ones

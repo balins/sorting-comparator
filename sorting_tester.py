@@ -1,9 +1,9 @@
 import random
-from typing import List
+from typing import List, Tuple, TextIO
 
 from util.measurable_sorting import MeasurableSorting
 from util.mode import Mode
-from util.output_tools import *
+from util import output_tools
 import defaults
 
 
@@ -35,7 +35,7 @@ class SortingTester:
         unsorted_list = generate_random_list(self.max_sample_size)
 
         for current_sample_size, i in self.mode.get_next_sample_size(self.interval, self.upper_iter_bound):
-            write_to_files(current_sample_size, f_time, f_ops)
+            output_tools.write_to_files(current_sample_size, f_time, f_ops)
 
             progress_str = self.get_progress_string(i, current_sample_size)
             print(progress_str, end="")
@@ -46,11 +46,11 @@ class SortingTester:
                 f_time.write("," + str(t))
                 f_ops.write("," + str(ops))
 
-            write_to_files("\n", f_time, f_ops)
+            output_tools.write_to_files("\n", f_time, f_ops)
 
             print(len(progress_str) * "\r", end="")
 
-        close_output_csv_files(f_time, f_ops)
+        output_tools.close_output_csv_files(f_time, f_ops)
 
         print("\n\nthe test has ended\n")
 
@@ -59,6 +59,13 @@ class SortingTester:
                    " - testing for " + str(current) + " elements..."
 
         return info_str
+
+    def validate_config(self):
+        if self.max_sample_size is None or self.max_sample_size < 1:
+            raise ValueError("Max sample size has to be a positive number.")
+
+        if self.interval is None or self.interval < 1 or self.interval > self.max_sample_size:
+            raise ValueError("Interval has to be a positive number smaller than max sample size.")
 
     def print_config_info(self):
         print("max_sample_size set to value of " + str(self.max_sample_size))
@@ -80,25 +87,20 @@ class SortingTester:
 
     def generate_chart_time(self):
         with open(self.output_folder + defaults.TIME_CSV_NAME) as file:
-            generate_chart_from_csv(file, "Time of execution comparison",
-                                    "Sample size", "Time [s]", self.output_folder + defaults.TIME_CHART_NAME)
+            output_tools.generate_chart_from_csv(file, "Time of execution comparison",
+                                                 "Sample size", "Time [s]",
+                                                 self.output_folder + defaults.TIME_CHART_NAME)
 
     def generate_chart_ops(self):
         with open(self.output_folder + defaults.OPS_CSV_NAME) as file:
-            generate_chart_from_csv(file, "Number of basic operations comparison",
-                                    "Sample size", "No. of operations", self.output_folder + defaults.OPS_CHART_NAME)
-
-    def validate_config(self):
-        if self.max_sample_size is None or self.max_sample_size < 1:
-            raise ValueError("Max sample size has to be a positive number.")
-
-        if self.interval is None or self.interval < 1 or self.interval > self.max_sample_size:
-            raise ValueError("Interval has to be a positive number smaller than max sample size.")
+            output_tools.generate_chart_from_csv(file, "Number of basic operations comparison",
+                                                 "Sample size", "No. of operations",
+                                                 self.output_folder + defaults.OPS_CHART_NAME)
 
     def init_output_files(self) -> Tuple[TextIO, TextIO]:
-        self.output_folder = create_output_folder(self.mode.name)
-        f_time_name, f_ops_name = create_output_csv_files(self.output_folder)
-        f_time, f_ops = open_output_csv_files(f_time_name, f_ops_name)
-        write_csv_column_names(self.sorting_algorithms, f_time, f_ops)
+        self.output_folder = output_tools.get_output_folder(self.mode.name)
+        f_time_name, f_ops_name = output_tools.create_output_csv_files(self.output_folder)
+        f_time, f_ops = output_tools.open_output_csv_files(f_time_name, f_ops_name)
+        output_tools.write_csv_column_names(self.sorting_algorithms, f_time, f_ops)
 
         return f_time, f_ops
