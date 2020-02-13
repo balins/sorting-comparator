@@ -1,7 +1,13 @@
-from util.measurable_sorting import MeasurableSorting
+ops_counter = 0
 
 
-def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
+def sort(list_to_sort: list) -> int:
+    quicksort(list_to_sort)
+    return ops_counter
+
+
+def quicksort(list_to_sort: list) -> list:
+    global ops_counter
     less = []
     equal_to_pivot = []
     greater = []
@@ -10,11 +16,11 @@ def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
         for element in list_to_sort:
             if element < pivot:
                 less.append(element)
-            elif element == pivot:
-                equal_to_pivot.append(element)
-            else:
+            elif element > pivot:
                 greater.append(element)
-            caller.ops_counter += 1
-        return sort(less, caller) + equal_to_pivot + sort(greater, caller)
+            else:
+                equal_to_pivot.append(element)
+            ops_counter += 1
+        return quicksort(less) + equal_to_pivot + quicksort(greater)
     else:
         return list_to_sort

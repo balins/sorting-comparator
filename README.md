@@ -1,7 +1,7 @@
 # sorting comparator
 
 ## about
-a simple sorting algorithms comparator that can be easily extended by new ones
+sorting algorithms comparator that can be easily extended by new ones
 
 tests all of the given sortings algorithms for consecutive sample sizes:
 
@@ -23,9 +23,9 @@ tests all of the given sortings algorithms for consecutive sample sizes:
 
 then generates line charts and .csv files containing data about algorithms' performance for every sample size
 
-comparison is concerned in terms of time of execution and number of dominant operations
+comparison is concerned in terms of time of execution and number of basic operations
 
-repo contains also some sample data for each of modes and default sorting algorithms
+repo contains also some sample data of default sorting algorithms' performance for each of modes
 
 ## requirements
 - python 3.5+
@@ -36,7 +36,7 @@ just run the following command in your terminal
 
 `python run.py [max_sample_size] [interval] [mode (lin, poly, exp)]`
 
-defaults:
+as you see all of the arguments are optional and default values are:
 - max_sample_size = 1000
 - interval = 10
 - mode = lin
@@ -46,20 +46,20 @@ sorting algorithms used by default are bubble sort, insertion sort and quicksort
 defaults can be changed in `defaults.py` module
 
 ## usage in external modules
-create `SortingTester` instance with custom parameters or pass `None`s to use defaults
+create `SortingTester` instance (all parameters are optional and can be replaced by defaults if not provided)
 
 then just call its run() and/or other methods
 
 ## output
 A folder containing:
 - two .png files containing line charts for respectively time of execution and
-number of dominant operations for each of sorting algorithms and every sample size
+number of basic operations for each of sorting algorithms and every sample size
 - two .csv files containing data about time of operation and
-number of dominant operations for each algorithm and every sample size
+number of basic operations for each algorithm and every sample size
 
 ## extending by custom sortings
-custom sorting is a module containing a function implementing interface `sort(list_to_sort: list, caller: MeasurableSorting) -> list`
+custom sorting is a module containing a function implementing interface `sort(list_to_sort: list) -> int`
 
-custom sorting should sort and return input list and increment caller's field `ops_counter` for every performed dominant operation
+a custom sorting should sort input list and return number of basic operations performed
 
-custom sorting should be placed in `sorting` directory and the directory's `__init__.py` should be updated to export new sorting module
+a custom sorting should be placed in `sorting` directory and the directory's `__init__.py` should be updated to export new sorting module

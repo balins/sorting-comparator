@@ -1,7 +1,5 @@
-from util.measurable_sorting import MeasurableSorting
-
-
-def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
+def sort(list_to_sort: list) -> int:
+    ops_counter = 0
     is_sorted = False
 
     while not is_sorted:
@@ -10,5 +8,5 @@ def sort(list_to_sort: list, caller: MeasurableSorting) -> list:
             if list_to_sort[index] > list_to_sort[index + 1]:
                 is_sorted = False
                 list_to_sort[index], list_to_sort[index + 1] = list_to_sort[index + 1], list_to_sort[index]
-            caller.ops_counter += 1
-    return list_to_sort
+            ops_counter += 1
+    return ops_counter
