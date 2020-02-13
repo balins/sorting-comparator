@@ -1,8 +1,37 @@
-from typing import List, Tuple, TextIO
+import csv
+import os
+import time
+from typing import Tuple, TextIO
 
 import matplotlib.pyplot as plt
 
-from util.measurable_sorting import MeasurableSorting
+import defaults
+
+
+def create_output_folder(mode_name: str):
+    folder_name = "." + os.path.sep + mode_name + "_"\
+                  + time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime()) + os.path.sep
+    os.mkdir(folder_name)
+    return folder_name
+
+
+def create_output_csv_files(output_folder: str) -> Tuple[str, str]:
+    file_time_name = output_folder + defaults.TIME_CSV_NAME
+    file_ops_name = output_folder + defaults.OPS_CSV_NAME
+
+    return file_time_name, file_ops_name
+
+
+def open_output_csv_files(time_filename: str, ops_filename: str) -> Tuple[TextIO, TextIO]:
+    file_time = open(time_filename, "w")
+    file_ops = open(ops_filename, "w")
+
+    return file_time, file_ops
+
+
+def close_output_csv_files(*files: TextIO):
+    for file in files:
+        file.close()
 
 
 def write_to_files(text: str, *files: TextIO):
@@ -10,17 +39,7 @@ def write_to_files(text: str, *files: TextIO):
         file.write(str(text))
 
 
-def init_csv_files(output_folder: str, sort_algs: List[MeasurableSorting]) -> Tuple[TextIO, TextIO]:
-    file_time_name = output_folder + "/results-time"
-    file_ops_name = output_folder + "/results-ops"
-    file_time = open(file_time_name + ".csv", "w")
-    file_ops = open(file_ops_name + ".csv", "w")
-    write_first_csv_row(sort_algs, file_time, file_ops)
-
-    return file_time, file_ops
-
-
-def write_first_csv_row(sort_algs: list, *files: TextIO):
+def write_csv_column_names(sort_algs: list, *files: TextIO):
     for file in files:
         first_row = "sample size"
 
@@ -32,22 +51,29 @@ def write_first_csv_row(sort_algs: list, *files: TextIO):
         file.write(first_row)
 
 
-def generate_charts(sortings: List[MeasurableSorting], output_folder: str, x_axis: List[int]):
-    for sorting in sortings:
-        plt.plot(x_axis, sorting.results_time, label=sorting.sorting_name)
+def import_from_csv(csv_file: TextIO):
+    reader = csv.reader(csv_file, delimiter=",")
+    column_names = next(reader)
+    name_to_list_of_values = {col: list() for col in column_names}
 
-    plt.title('Operating time comparison')
-    plt.ylabel('Time [s]')
-    plt.xlabel('Sample size')
+    for row in reader:
+        for name in column_names:
+            first = float(row.pop(0))
+            name_to_list_of_values[name].append(first)
+
+    return name_to_list_of_values
+
+
+def generate_chart_from_csv(csv_file: TextIO, title: str, x_label: str, y_label: str, output_filename: str):
+    data = import_from_csv(csv_file)
+    x_axis = [0, *data.pop("sample size")]
+
+    for sorting_name in data:
+        plt.plot(x_axis, [0, *data[sorting_name]], label=sorting_name)
+
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.legend()
-    plt.savefig(output_folder + '/chart-time.png', dpi=150)
+    plt.savefig(output_filename, dpi=150)
     plt.clf()
-
-    for sorting in sortings:
-        plt.plot(x_axis, sorting.results_ops, label=sorting.sorting_name)
-
-    plt.title("Dominant operations number comparison")
-    plt.ylabel('No. of operations')
-    plt.xlabel('Sample size')
-    plt.legend()
-    plt.savefig(output_folder + '/chart-ops.png', dpi=150)

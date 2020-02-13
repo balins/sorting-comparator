@@ -10,3 +10,7 @@ SORTING_ALGORITHMS = [
     MeasurableSorting(sortings.insertion_sort, "insertion sort"),
     MeasurableSorting(sortings.quicksort, "quicksort")
 ]
+TIME_CSV_NAME = "results-time.csv"
+OPS_CSV_NAME = "results-ops.csv"
+TIME_CHART_NAME = "chart-time.png"
+OPS_CHART_NAME = "chart-ops.png"
