@@ -36,17 +36,17 @@ just run the following command in your terminal
 
 `python run.py [max_sample_size] [interval] [mode (lin, poly, exp)]`
 
-as you see all of the arguments are optional and default values are:
-- max_sample_size = 1000
-- interval = 10
+as you can see, all of the arguments are optional and their default values are:
+- max_sample_size = 10500
+- interval = 750
 - mode = lin
 
-sorting algorithms used by default are bubble sort, insertion sort and quicksort
+sorting algorithms used by default are bubble sort, selection sort, insertion sort, merge sort and quicksort
 
 defaults can be changed in `defaults.py` module
 
 ## usage in external modules
-create `SortingTester` instance (all parameters are optional and can be replaced by defaults if not provided)
+create `SortingTester` instance (all parameters are optional and will be replaced by defaults if not provided)
 
 then just call its run() and/or other methods
 

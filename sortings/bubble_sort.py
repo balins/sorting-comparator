@@ -1,5 +1,6 @@
 def sort(list_to_sort: list) -> int:
     ops_counter = 0
+
     is_sorted = False
 
     while not is_sorted:
@@ -9,4 +10,5 @@ def sort(list_to_sort: list) -> int:
                 is_sorted = False
                 list_to_sort[index], list_to_sort[index + 1] = list_to_sort[index + 1], list_to_sort[index]
             ops_counter += 1
+
     return ops_counter
