@@ -1,5 +1,9 @@
 # sorting comparator v1.0
 
+![Time comparison (100 000, 1000, lin)](https://github.com/jakub-balinski/sorting-comparator/blob/master/LINEAR_SAMPLE/chart-time.png?raw=true)
+
+![Basic operations comparison (100 000, 1000, lin)](https://github.com/jakub-balinski/sorting-comparator/blob/master/LINEAR_SAMPLE/chart-ops.png?raw=true)
+
 ## about
 sorting algorithms comparator that can be easily extended by new ones
 
